@@ -1183,8 +1183,8 @@ document.addEventListener('DOMContentLoaded', () => {
   construirNav();
 
   $('#topbar-meta').innerHTML = `
-    <span>Sociedad <b>${esc(META.sociedad)}</b></span>
-    <span>Planta <b>${esc(META.planta)}</b></span>
+    <span>Alcance <b>${esc(META.alcance)}</b></span>
+    <span>Sociedad <b>${esc(META.sociedad)}</b> · Planta <b>${esc(META.planta)}</b></span>
     <span>Documento fuente <b>${esc(META.version)} · ${esc(META.fuenteFecha)}</b></span>`;
 
   $('#menu-toggle').addEventListener('click', () => $('#nav').classList.toggle('is-open'));

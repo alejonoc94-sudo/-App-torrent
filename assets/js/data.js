@@ -15,6 +15,7 @@
    ============================================================ */
 
 const META = {
+  alcance:  'Chile',
   entidad:  'Torrent Pharma Chile SpA',
   sociedad: 'T303',
   planta:   'E303',

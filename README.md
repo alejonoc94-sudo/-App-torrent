@@ -1,17 +1,29 @@
-# Torrent Pharma LATAM · Hoja de ruta de actividades
+# Hoja de ruta · Torrent Pharma Chile
 
 Tablero web que reúne en una sola interfaz los procesos, el calendario, los reportes y los
 compromisos de la operación de **Torrent Pharma Chile SpA (sociedad T303, planta E303)**,
 a partir de los documentos de la carpeta `Documentos / Claude / App Torrent Latam`.
 
+**Alcance: Chile.** El tablero cubre únicamente la operación chilena. Lo prepara y lo mantiene
+Finanzas LATAM, que es el dueño del proceso end-to-end, pero no incluye México (T300) ni Colombia.
+
 ## Cómo abrirlo
 
-No necesita instalación, servidor ni conexión a internet.
+Hay dos formas, según lo que necesite:
 
-**Abrir `index.html` con doble clic.** Funciona en Chrome, Edge, Firefox y Safari.
+**1 · La carpeta completa** — abrir `index.html` con doble clic. Es la versión de trabajo: el
+contenido vive en archivos separados y se edita cómodamente.
 
-Para compartirlo con el equipo basta con copiar la carpeta completa (o subirla a SharePoint /
-OneDrive y abrir el `index.html` desde ahí). No hay compilación, dependencias ni proceso de build.
+**2 · Un solo archivo** — `dist/hoja-de-ruta-torrent-chile.html` (2,2 MB) lleva dentro el CSS, el
+JavaScript y las cuatro figuras. Se puede enviar por correo, subir a SharePoint o pasar por USB, y
+funciona igual. Para regenerarlo tras cualquier cambio:
+
+```
+node build.js
+```
+
+Ninguna de las dos necesita instalación, servidor ni conexión a internet. Funcionan en Chrome, Edge,
+Firefox y Safari.
 
 ## Qué contiene
 
@@ -93,6 +105,8 @@ nivel de fila, y lo señala en la sección de reportes. Los dos reportes en disc
 
 ```
 index.html              La aplicación. Se abre con doble clic.
+build.js                Empaqueta todo en un único archivo distribuible.
+dist/                   El archivo único ya generado.
 assets/img/             Las tres figuras del documento de proceso (4 archivos, ES y EN).
 assets/css/tokens.css   Tokens de diseño de DISENO.md §8 traducidos a CSS.
 assets/css/app.css      Componentes: panel, KPI, insight, tabla, estados.
