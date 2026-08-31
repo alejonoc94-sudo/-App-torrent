@@ -1,0 +1,104 @@
+/* ============================================================
+   Torrent Pharma · Tokens de diseño
+   Fuente: DISENO.md §8 "Tokens canónicos recomendados"
+   Los valores marcados (m) fueron medidos por píxel desde ráster
+   y deben confirmarse contra un activo de marca auténtico.
+   ============================================================ */
+
+:root {
+  /* ---- Marca (DISENO.md §2.1) ---- */
+  --torrent-indigo:      #292662;  /* dk2 / primario — del logo */
+  --torrent-violet:      #9283BE;  /* accent1 — del logo */
+  --torrent-lavender:    #C3B2D4;  /* accent2 / texto sobre oscuro */
+  --torrent-lavender-bg: #F7F4FB;  /* (m) relleno de tarjeta de insight */
+  --cover-indigo:        #34367F;  /* campo de portada */
+  --footer-violet:       #9681BC;  /* filete del pie, image2.png */
+
+  /* ---- Tinta (DISENO.md §8) ---- */
+  --ink-900: #12295C;  /* (m) azul marino de titular — sustituye a los seis del §2.2 */
+  --ink-700: #1F3864;  /* cabeceras de panel, barras de título */
+  --ink-500: #5E328C;  /* (m) violeta de antetítulo — 9.09:1 sobre blanco, el seguro */
+  --ink-300: #888888;  /* leyendas — 3.54:1, NO apto AA: solo decorativo o ≥24px */
+
+  /* ---- Adición documentada: gris de leyenda accesible ----
+     DISENO.md §7.12 registra que --ink-300 (#888888) da 3.54:1 sobre blanco
+     y no aprueba AA. Se añade --ink-400 para todo texto pequeño gris. */
+  --ink-400: #5A6172;  /* 6.6:1 sobre blanco — AA para texto normal */
+
+  /* ---- Neutros (DISENO.md §7.7: hoy hay siete grises de cuatro orígenes) ----
+     Se consolidan en una rampa única. */
+  --n-000: #FFFFFF;
+  --n-025: #FAFAFC;
+  --n-050: #F4F5F8;
+  --n-100: #E9EAF0;
+  --n-200: #D8DAE4;
+  --n-300: #BFC3D1;
+
+  /* ---- Datos (DISENO.md §2.3) ---- */
+  --data-1: #073C6D;
+  --data-2: #0195DF;
+  --data-3: #43AA2E;
+  --data-4: #5B9BD5;
+  --data-5: #8FBF6E;
+  --data-6: #A9A9A9;
+  --data-7: #1B4F72;
+
+  /* ---- Semánticos ----
+     DISENO.md §7.7 los deja "sin definir — hoy verde/rojo a ojo".
+     Se fijan aquí en valores que aprueban AA sobre blanco. */
+  --positive:    #1E7A3C;  /* 4.8:1 */
+  --negative:    #B3261E;  /* 6.2:1 */
+  --positive-bg: #E8F4EC;
+  --negative-bg: #FBEAE9;
+
+  /* ---- Estado del proceso ----
+     Escala de la fuente: PDF O2C §2.2 — verde = entregable producido con
+     evidencia; ámbar = acordado o en discusión, sin entregable estable;
+     gris = no ha empezado. */
+  --st-operando:      #1E7A3C;
+  --st-operando-bg:   #E8F4EC;
+  --st-definicion:    #8A5A00;  /* ámbar accesible: 5.3:1 */
+  --st-definicion-bg: #FDF3E0;
+  --st-pendiente:     #5A6172;
+  --st-pendiente-bg:  #EFF0F4;
+
+  /* ---- Tipografía (DISENO.md §1.1, §1.3) ---- */
+  --font-display: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body:    "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semi:    600;
+
+  /* Escala del §1.3 convertida de pt a rem (1pt ≈ 1.333px, base 16px).
+     72/28/18/16/8 pt → los cinco roles que el documento sí define. */
+  --size-cover:   6.00rem;  /* 72pt — título de portada */
+  --size-h1:      2.33rem;  /* 28pt — titular */
+  --size-h2:      1.50rem;  /* 18pt */
+  --size-kicker:  1.13rem;  /* ~13.5pt — antetítulo, cursiva, --ink-500 */
+  --size-body:    1.00rem;  /* 16pt→base */
+  --size-sm:      0.875rem;
+  --size-caption: 0.75rem;  /* 8pt — pie */
+
+  /* ---- Maquetación (DISENO.md §5.1, §8) ----
+     La retícula de la diapositiva es 13.333in de ancho con margen 0.46in.
+     Se conserva la proporción: margen = 3.45% del ancho útil. */
+  --margin-x: clamp(1rem, 3.45vw, 2.5rem);
+  --gutter:   1.15rem;   /* 0.18in / 13.333in del ancho — el medianil del §5.2 */
+  --max-w:    1680px;
+  --footer-band-h: 6px;  /* el filete violeta de 0.267in, a escala */
+
+  /* ---- Radios (DISENO.md §4.1–4.3: 4px panel, 6px KPI, 8px insight) ---- */
+  --r-panel:   4px;
+  --r-kpi:     6px;
+  --r-insight: 8px;
+
+  /* ---- Elevación ----
+     §3.3: no existe ni una sola sombra nativa en los tres archivos.
+     Se usan sombras mínimas, sólo para separar capas interactivas. */
+  --sh-1: 0 1px 2px rgba(18, 41, 92, .06);
+  --sh-2: 0 4px 14px rgba(18, 41, 92, .10);
+  --sh-3: 0 12px 32px rgba(18, 41, 92, .16);
+
+  --t-fast: 120ms ease;
+  --t-base: 200ms cubic-bezier(.4, 0, .2, 1);
+}
