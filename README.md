@@ -19,12 +19,12 @@ OneDrive y abrir el `index.html` desde ahí). No hay compilación, dependencias 
 |---|---|
 | **Resumen** | Indicadores del avance global, avance por fase, carga por responsable y la lectura principal del proceso. |
 | **Archivos** | Las seis fuentes de la carpeta, qué aporta cada una y un salto directo a la sección que la consume. |
-| **Actores y sistemas** | Los seis grupos de actores, sus personas clave, sus sistemas y la arquitectura de información en tres capas. |
-| **Procesos y fases** | Las 27 actividades del ciclo mensual repartidas en 5 fases, con responsable, input, output y estado. |
+| **Actores y sistemas** | La **Figura 1** original, más los seis grupos de actores, sus personas clave, sus sistemas y la arquitectura de información en tres capas. |
+| **Procesos y fases** | La **Figura 2** original, más las 27 actividades del ciclo mensual repartidas en 5 fases, con responsable, input, output y estado. |
 | **Calendario** | El ciclo semanal (8 hitos) y el ciclo de cierre mensual propuesto de D-3 a D+10 (14 hitos). |
 | **Catálogo de reportes** | Los 16 entregables que sostienen el proceso, con emisor, receptor, frecuencia, sistema y estado. |
 | **Matriz RACI** | 14 actividades × 5 actores. |
-| **Timeline** | 9 hitos construidos con evidencia, 5 frentes en curso y 5 bloques sin iniciar. |
+| **Timeline** | La **Figura 3** original, más 9 hitos construidos con evidencia, 5 frentes en curso y 5 bloques sin iniciar. |
 | **Riesgos y controles** | 8 riesgos estructurales, cada uno con su control propuesto y su dueño. |
 | **Próximos pasos** | Las 9 acciones ordenadas por dependencia, más las preguntas abiertas a Forvis Mazars y Pharma ISA. |
 | **Minuta y compromisos** | Los 12 compromisos del 23 de julio y los 10 temas contables tratados. |
@@ -40,6 +40,9 @@ OneDrive y abrir el `index.html` desde ahí). No hay compilación, dependencias 
   que necesita, el output que entrega y por qué importa. Se cierra con `Esc` o con la ×.
 - **Enlaces directos** — cada sección tiene su propia dirección (`index.html#reportes`,
   `#calendario`, `#riesgos`…), así que se puede enviar por correo un enlace a una sección concreta.
+- **Ampliar una figura** — las tres figuras del documento están incrustadas en su sección. Al
+  pulsarlas se abren a pantalla completa, con zoom (botones, teclas `+` `−` `0`, o `Ctrl`/`⌘` +
+  rueda) y arrastre para desplazarse. La Figura 3 tiene selector **ES / EN**.
 - **Imprimir** — el botón del pie imprime todas las secciones, una por página, sin la navegación.
 
 ## Escala de estado
@@ -59,7 +62,8 @@ Todo el contenido está transcrito de:
 - `2026.08.06_TORRENT CHILE_Proceso O2C y Cierre Contable_v1.pdf` — 19 páginas, v1.0, 6-ago-2026
 - `Minuta_Alineamiento_Cierre_Mazars_Torrent.docx` — reunión del 23-jul-2026
 - `DISENO.md` — sistema de diseño, 21-ago-2026
-- `Fig1` / `Fig2` / `Fig3` `.png` — arquitectura, mapa de proceso y timeline
+- `Fig1` / `Fig2` / `Fig3` `.png` — arquitectura, mapa de proceso y timeline, incrustadas en
+  `assets/img/` y visibles dentro del tablero
 
 No se añadió ningún dato que no esté en esos archivos. Donde el tablero fija un valor que las
 fuentes dejan abierto, queda anotado en el propio código y en la sección «Sistema de diseño».
@@ -89,6 +93,7 @@ nivel de fila, y lo señala en la sección de reportes. Los dos reportes en disc
 
 ```
 index.html              La aplicación. Se abre con doble clic.
+assets/img/             Las tres figuras del documento de proceso (4 archivos, ES y EN).
 assets/css/tokens.css   Tokens de diseño de DISENO.md §8 traducidos a CSS.
 assets/css/app.css      Componentes: panel, KPI, insight, tabla, estados.
 assets/js/data.js       Todo el contenido, transcrito de los documentos.

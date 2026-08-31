@@ -77,6 +77,28 @@
   <div class="drawer__body" id="drawer-body"></div>
 </aside>
 
+<!-- Visor de figuras a pantalla completa -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lb-title">
+  <div class="lightbox__bar">
+    <div>
+      <div class="lightbox__title" id="lb-title"></div>
+      <div class="lightbox__sub" id="lb-sub"></div>
+    </div>
+    <div class="lightbox__tools">
+      <div class="figure__langs" id="lb-langs"></div>
+      <button class="lightbox__btn" id="lb-fit" type="button" aria-pressed="true">Ajustar</button>
+      <button class="lightbox__btn" id="lb-out" type="button" aria-label="Alejar">−</button>
+      <span class="lightbox__zoomval" id="lb-val">100%</span>
+      <button class="lightbox__btn" id="lb-in" type="button" aria-label="Acercar">+</button>
+      <button class="lightbox__btn" id="lb-close" type="button" aria-label="Cerrar el visor">✕ Cerrar</button>
+    </div>
+  </div>
+  <div class="lightbox__stage is-fit" id="lb-stage">
+    <img id="lb-img" src="" alt="">
+  </div>
+  <div class="lightbox__foot" id="lb-foot"></div>
+</div>
+
 <script src="assets/js/data.js"></script>
 <script src="assets/js/app.js"></script>
 </body>

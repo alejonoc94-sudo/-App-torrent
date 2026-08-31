@@ -48,7 +48,9 @@ const ICON = {
   search:    '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
   link:      '<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7L12.5 19.5"/>',
   layers:    '<path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/>',
-  print:     '<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 15h12v6H6z"/>'
+  print:     '<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 15h12v6H6z"/>',
+  zoom:      '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8.5v5M8.5 11h5"/>',
+  image:     '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="m3.5 17 5-5 4.5 4.5L16 14l4.5 4.5"/>'
 };
 const svg = (name, cls = '') =>
   `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
@@ -67,6 +69,26 @@ const panel = (title, unit, body, flush = false) => `
     <div class="panel__head">${esc(title)}${unit ? `<span class="panel__unit">${esc(unit)}</span>` : ''}</div>
     <div class="panel__body${flush ? ' panel__body--flush' : ''}">${body}</div>
   </section>`;
+
+/* ---- Figura: diagrama original del documento, con visor a pantalla completa ---- */
+const figura = (key) => {
+  const f = FIGURAS[key];
+  if (!f) return '';
+  return `
+    <figure class="figure">
+      <div class="headline__kicker" style="margin-bottom:.45rem">${esc(f.kicker)}</div>
+      <button class="figure__frame" type="button" data-fig="${key}"
+              aria-label="Abrir «${esc(f.titulo)}» a pantalla completa">
+        <img src="${f.archivo}" alt="${esc(f.alt)}" loading="lazy" decoding="async">
+        <span class="figure__zoom">${svg('zoom')} Ampliar</span>
+      </button>
+      <figcaption class="figure__cap">
+        <span><b>Figura ${f.n}</b> · ${esc(f.titulo)}</span>
+        <span>${esc(f.pie)}</span>
+        <span class="chip chip--plain chip--neutral">${esc(f.idioma)}</span>
+      </figcaption>
+    </figure>`;
+};
 
 const insight = (title, items) => `
   <aside class="insight">
@@ -92,6 +114,130 @@ const progressBar = (c) => {
       <span><i style="background:var(--st-definicion)"></i>En definición ${c.definicion} · ${pc(c.definicion)}</span>
       <span><i style="background:var(--st-pendiente)"></i>Pendiente ${c.pendiente} · ${pc(c.pendiente)}</span>
     </div>`;
+};
+
+/* ---------- Visor de figuras a pantalla completa ---------- */
+const lightbox = {
+  el: null, stage: null, img: null,
+  key: null, lang: 'es', zoom: 1, fit: true,
+  natural: 0, lastFocus: null,
+
+  init() {
+    this.el    = $('#lightbox');
+    this.stage = $('#lb-stage');
+    this.img   = $('#lb-img');
+
+    $('#lb-close').addEventListener('click', () => this.close());
+    $('#lb-fit').addEventListener('click',   () => this.setFit(!this.fit));
+    $('#lb-in').addEventListener('click',    () => this.setZoom(this.ratio() * 1.35));
+    $('#lb-out').addEventListener('click',   () => this.setZoom(this.ratio() / 1.35));
+
+    document.addEventListener('keydown', (e) => {
+      if (!this.el.classList.contains('is-open')) return;
+      if (e.key === 'Escape') { e.stopPropagation(); this.close(); }
+      if (e.key === '+' || e.key === '=') this.setZoom(this.ratio() * 1.35);
+      if (e.key === '-') this.setZoom(this.ratio() / 1.35);
+      if (e.key === '0') this.setFit(true);
+    });
+
+    /* Arrastrar para desplazar cuando la imagen excede el área visible */
+    let dragging = false, sx = 0, sy = 0, sl = 0, st = 0;
+    this.stage.addEventListener('pointerdown', (e) => {
+      if (this.fit) return;
+      dragging = true; sx = e.clientX; sy = e.clientY;
+      sl = this.stage.scrollLeft; st = this.stage.scrollTop;
+      this.stage.classList.add('is-grabbing');
+      this.stage.setPointerCapture(e.pointerId);
+    });
+    this.stage.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      this.stage.scrollLeft = sl - (e.clientX - sx);
+      this.stage.scrollTop  = st - (e.clientY - sy);
+    });
+    const stop = () => { dragging = false; this.stage.classList.remove('is-grabbing'); };
+    this.stage.addEventListener('pointerup', stop);
+    this.stage.addEventListener('pointercancel', stop);
+
+    /* Rueda con Ctrl/⌘ para hacer zoom */
+    this.stage.addEventListener('wheel', (e) => {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      this.setZoom(this.ratio() * (e.deltaY < 0 ? 1.12 : 1 / 1.12));
+    }, { passive: false });
+  },
+
+  open(key) {
+    const f = FIGURAS[key];
+    if (!f) return;
+    this.key = key; this.lang = 'es';
+    this.lastFocus = document.activeElement;
+
+    $('#lb-title').textContent = `Figura ${f.n} · ${f.titulo}`;
+    $('#lb-sub').textContent   = f.unidad;
+    $('#lb-foot').textContent  = f.pie;
+
+    /* Selector de idioma, sólo si la figura tiene versión en inglés */
+    $('#lb-langs').innerHTML = f.archivoEn ? `
+      <button class="lightbox__btn" type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button class="lightbox__btn" type="button" data-lang="en" aria-pressed="false">EN</button>` : '';
+
+    this.setSrc();
+    this.el.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    this.setFit(true);
+    $('#lb-close').focus();
+  },
+
+  setSrc() {
+    const f = FIGURAS[this.key];
+    this.img.src = (this.lang === 'en' && f.archivoEn) ? f.archivoEn : f.archivo;
+    this.img.alt = f.alt;
+    this.img.onload = () => {
+      this.natural = this.img.naturalWidth;
+      if (this.fit) this.updateVal();
+    };
+  },
+
+  setLang(l) {
+    this.lang = l;
+    $$('#lb-langs [data-lang]').forEach((b) =>
+      b.setAttribute('aria-pressed', b.dataset.lang === l));
+    this.setSrc();
+  },
+
+  setFit(on) {
+    this.fit = on;
+    this.stage.classList.toggle('is-fit', on);
+    this.stage.classList.toggle('is-grab', !on);
+    $('#lb-fit').setAttribute('aria-pressed', String(on));
+    if (on) { this.img.style.width = ''; this.zoom = 1; }
+    else if (!this.img.style.width) this.img.style.width = this.natural + 'px';
+    this.updateVal();
+  },
+
+  /* La escala que se está viendo ahora mismo. En modo «ajustar» la imagen se
+     estira por CSS, así que el zoom real es el ancho mostrado sobre el natural. */
+  ratio() {
+    return (this.fit && this.natural) ? this.img.clientWidth / this.natural : this.zoom;
+  },
+
+  setZoom(z) {
+    this.zoom = Math.min(4, Math.max(0.25, z));
+    if (this.fit) this.setFit(false);
+    this.img.style.width = Math.round(this.natural * this.zoom) + 'px';
+    this.updateVal();
+  },
+
+  updateVal() {
+    $('#lb-val').textContent = (Math.round(this.ratio() * 100) || 100) + '%';
+  },
+
+  close() {
+    if (!this.el.classList.contains('is-open')) return;
+    this.el.classList.remove('is-open');
+    document.body.style.overflow = '';
+    if (this.lastFocus && document.contains(this.lastFocus)) this.lastFocus.focus();
+  }
 };
 
 /* ---------- Panel de detalle ("click and fill") ---------- */
@@ -301,6 +447,12 @@ function viewArchivos() {
               <div class="file-card__meta">${esc(f.meta)}</div>
             </div>
           </div>
+          ${f.fig ? `
+            <button class="figure__frame" type="button" data-fig="${f.fig}"
+                    aria-label="Abrir «${esc(FIGURAS[f.fig].titulo)}» a pantalla completa">
+              <img src="${FIGURAS[f.fig].archivo}" alt="${esc(FIGURAS[f.fig].alt)}" loading="lazy" decoding="async">
+              <span class="figure__zoom">${svg('zoom')} Ampliar</span>
+            </button>` : ''}
           <p class="file-card__desc">${esc(f.desc)}</p>
           <div class="file-card__tags">
             ${f.aporta.map((t) => `<span class="chip chip--plain chip--neutral">${esc(t)}</span>`).join('')}
@@ -309,7 +461,9 @@ function viewArchivos() {
             <button class="btn btn--primary btn--sm" type="button" data-goto="${f.ir}">
               ${svg('link')} Ver en el tablero
             </button>
-            <span class="chip chip--plain chip--violet">${f.secciones} secciones</span>
+            ${f.fig
+              ? `<button class="btn btn--ghost btn--sm" type="button" data-fig="${f.fig}">${svg('zoom')} Ampliar</button>`
+              : `<span class="chip chip--plain chip--violet">${f.secciones} secciones</span>`}
           </div>
         </article>`).join('')}
     </div>
@@ -330,6 +484,7 @@ function viewProcesos() {
       'Veintisiete actividades encadenadas, cada una con su responsable, su insumo y el entregable que pasa al siguiente eslabón.',
       'Pulse cualquier actividad para ver su detalle completo. Use los filtros para aislar lo que ya opera de lo que falta.'
     )}
+    ${figura('mapa')}
     ${barraFiltros('procesos')}
     <div id="procesos-lista"></div>`;
 }
@@ -608,6 +763,7 @@ function viewTimeline() {
       'Nueve hitos ya ocurrieron con evidencia documental entre marzo y agosto de 2026; cinco frentes están en curso y cinco bloques no han empezado.',
       'La franja central marca la fecha del documento fuente: 6 de agosto de 2026.'
     )}
+    ${figura('timeline')}
     <div class="grid-2">
       <div>
         ${panel('Construido, con evidencia', `${CONSTRUIDO.length} hitos`, `
@@ -790,6 +946,8 @@ function viewActores() {
       'Dos de los tres sistemas transaccionales son de terceros: el control de Torrent es por reportería y conciliación, no por acceso al sistema.',
       'Torrent no necesita acceso a SoftLand ni a CISAT para controlar el proceso, pero sí necesita que los reportes de ambos lleguen con estructura fija y campos suficientes para cruzarse entre sí.'
     )}
+
+    ${figura('arquitectura')}
 
     ${panel('Arquitectura de información', 'Tres capas por las que viaja el dato', `
       <div class="grid-3">
@@ -1021,6 +1179,7 @@ function irA(id, push = true) {
 
 document.addEventListener('DOMContentLoaded', () => {
   drawer.init();
+  lightbox.init();
   construirNav();
 
   $('#topbar-meta').innerHTML = `
@@ -1051,6 +1210,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tema = e.target.closest('[data-tema]');
     if (tema) return abrirTema(tema.dataset.tema);
+
+    const fig = e.target.closest('[data-fig]');
+    if (fig) return lightbox.open(fig.dataset.fig);
+
+    const lang = e.target.closest('[data-lang]');
+    if (lang) return lightbox.setLang(lang.dataset.lang);
 
     /* Filtros de estado */
     const pill = e.target.closest('.pill[data-estado]');

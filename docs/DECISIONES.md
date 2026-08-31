@@ -144,5 +144,40 @@ problema que el §7.4 pide resolver incrustando la fuente en el `.pptx`.
   pensada para abrirse con doble clic sin servidor.
 - **No guarda cambios.** Es un tablero de consulta. Marcar una actividad como completada requiere
   editar `data.js`.
-- **No incluye las tres figuras PNG**, porque están en SharePoint y no en el repositorio. Su
-  contenido está reconstruido como tablas y tarjetas navegables en las secciones correspondientes.
+- **No lista dinámicamente los archivos de la carpeta.** Ver el punto anterior.
+
+
+## 8 · Las figuras
+
+Las tres figuras del documento de proceso están descargadas de SharePoint a `assets/img/` y
+incrustadas en la sección que les corresponde:
+
+| Figura | Archivo | Sección |
+|---|---|---|
+| 1 · Arquitectura de información | `fig1-arquitectura-informacion-en.png` | Actores y sistemas |
+| 2 · Mapa del proceso O2C | `fig2-mapa-proceso-o2c-en.png` | Procesos y fases |
+| 3 · Timeline de construcción | `fig3-timeline-construccion-es.png` (+ `-en`) | Timeline |
+
+Las tres se abren en un visor a pantalla completa con zoom del 25% al 400%, arrastre para
+desplazarse y atajos de teclado (`+`, `−`, `0` para ajustar, `Esc` para cerrar). La Figura 3 es la
+única que existe en las dos versiones de idioma, así que su visor lleva selector **ES / EN**; por
+defecto muestra la española, coherente con el resto del tablero. Las Figuras 1 y 2 sólo existen en
+inglés en la carpeta, y así se etiquetan.
+
+### Texto alternativo
+
+`DISENO.md` §7.12 registra como ausente «texto alternativo en ninguna imagen, incluidas las cinco
+diapositivas que *son* imágenes». Aquí cada figura lleva un `alt` descriptivo y completo —entre 600
+y 2 100 caracteres— que enumera las columnas, las filas, los hitos y los estados, de modo que el
+contenido del diagrama sigue siendo accesible sin ver la imagen.
+
+Ese texto alternativo cumple además una segunda función: el contenido de las figuras **también**
+está reconstruido como tablas y tarjetas navegables en cada sección, así que la figura y su
+equivalente en datos conviven. Quien quiera la vista de conjunto mira el diagrama; quien quiera
+filtrar, buscar o abrir el detalle de una actividad usa las tarjetas.
+
+### Coherencia visual
+
+Las figuras fueron producidas con la misma paleta que `DISENO.md` documenta —índigo `#292662`,
+violeta, y la escala verde / ámbar / gris para los estados—, así que se integran en el tablero sin
+ningún tratamiento. Es la mejor evidencia de que los tokens del §8 describen bien la marca.

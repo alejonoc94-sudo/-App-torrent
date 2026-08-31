@@ -732,3 +732,111 @@ table.data td.raci-cell { text-align: center; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   html { scroll-behavior: auto; }
 }
+
+/* ============================================================
+   20 · Figuras
+   Las tres figuras originales del documento de proceso. Son
+   diagramas anchos (≈3200 px), así que se muestran a ancho
+   completo con scroll horizontal propio y se abren en un visor
+   a pantalla completa con zoom.
+   ============================================================ */
+
+.figure { margin-bottom: var(--gutter); }
+.figure__frame {
+  position: relative;
+  background: var(--n-000);
+  border: 1px solid var(--n-100);
+  border-radius: var(--r-panel);
+  overflow: hidden;
+  cursor: zoom-in;
+  display: block; width: 100%; padding: 0;
+  transition: border-color var(--t-base), box-shadow var(--t-base);
+}
+.figure__frame:hover { border-color: var(--torrent-violet); box-shadow: var(--sh-2); }
+.figure__frame img { display: block; width: 100%; height: auto; }
+
+.figure__zoom {
+  position: absolute; right: .7rem; bottom: .7rem;
+  display: inline-flex; align-items: center; gap: .4rem;
+  background: rgba(18, 41, 92, .88); color: #fff;
+  border-radius: 20px; padding: .32rem .7rem;
+  font-size: var(--size-caption); font-weight: var(--fw-semi);
+  pointer-events: none; backdrop-filter: blur(3px);
+}
+.figure__zoom svg { width: 14px; height: 14px; }
+
+.figure__cap {
+  display: flex; flex-wrap: wrap; gap: .4rem .9rem; align-items: baseline;
+  padding: .6rem .2rem 0;
+  font-size: var(--size-caption); color: var(--ink-400); line-height: 1.5;
+}
+.figure__cap b { color: var(--ink-500); font-weight: var(--fw-semi); }
+
+.figure__langs { display: flex; gap: .35rem; }
+
+/* ---- Visor a pantalla completa ---- */
+.lightbox {
+  position: fixed; inset: 0; z-index: 150;
+  background: rgba(18, 41, 92, .96);
+  display: none; flex-direction: column;
+}
+.lightbox.is-open { display: flex; }
+.lightbox__bar {
+  flex: none; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  padding: .85rem var(--margin-x);
+  border-bottom: 1px solid rgba(255,255,255,.14);
+  color: #fff;
+  /* Opaca: si deja traslucir la página de fondo, los controles se vuelven
+     ilegibles sobre el texto del tablero. */
+  background: var(--torrent-indigo);
+}
+.lightbox__title { font-family: var(--font-display); font-weight: var(--fw-semi); font-size: .98rem; }
+.lightbox__sub { font-size: var(--size-caption); color: var(--torrent-lavender); }
+.lightbox__tools { margin-left: auto; display: flex; align-items: center; gap: .45rem; }
+.lightbox__btn {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+  color: #fff; border-radius: var(--r-kpi); padding: .35rem .7rem;
+  font-size: var(--size-caption); font-weight: var(--fw-semi); cursor: pointer;
+  display: inline-flex; align-items: center; gap: .35rem;
+  transition: background var(--t-fast);
+}
+.lightbox__btn:hover { background: rgba(255,255,255,.26); }
+.lightbox__btn[aria-pressed="true"] { background: var(--torrent-lavender); color: var(--torrent-indigo); border-color: transparent; }
+.lightbox__btn svg { width: 14px; height: 14px; }
+.lightbox__zoomval {
+  font-size: var(--size-caption); color: #fff; font-weight: var(--fw-semi);
+  min-width: 48px; text-align: center; font-variant-numeric: tabular-nums;
+  background: rgba(255,255,255,.12); border-radius: var(--r-kpi); padding: .35rem .3rem;
+}
+
+.lightbox__stage {
+  flex: 1; overflow: auto; padding: 1rem;
+  display: grid; place-items: center;
+  scrollbar-color: var(--torrent-violet) transparent;
+}
+.lightbox__stage img {
+  display: block; max-width: none;
+  background: #fff; border-radius: var(--r-panel);
+  transition: width var(--t-base);
+}
+.lightbox__stage.is-fit img { width: 100% !important; max-width: 100%; }
+.lightbox__stage.is-grab { cursor: grab; }
+.lightbox__stage.is-grabbing { cursor: grabbing; }
+
+.lightbox__foot {
+  flex: none; padding: .7rem var(--margin-x);
+  border-top: 1px solid rgba(255,255,255,.14);
+  background: var(--torrent-indigo);
+  font-size: var(--size-caption); color: var(--torrent-lavender);
+  line-height: 1.5; max-height: 22vh; overflow-y: auto;
+}
+
+@media (max-width: 700px) {
+  .lightbox__sub, .lightbox__foot { display: none; }
+}
+
+@media print {
+  .lightbox { display: none !important; }
+  .figure__zoom { display: none; }
+  .figure__frame { border-color: var(--n-200); }
+}

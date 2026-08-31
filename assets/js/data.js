@@ -62,8 +62,8 @@ const ARCHIVOS = [
   },
   {
     nombre: 'Fig1_Information Architecture_Torrent Chile_EN.png',
-    ext: 'png',
-    meta: 'Figura 1 · Arquitectura de información',
+    ext: 'png', fig: 'arquitectura',
+    meta: 'Figura 1 · Arquitectura de información · 3060 × 1307 px',
     desc: 'Las tres capas por las que viaja el dato: sistemas de origen en manos de terceros, capa de control local manual en Excel y correo, y capa de consolidación en HO. El riesgo central está en la capa intermedia.',
     aporta: ['Arquitectura', 'Sistemas', 'Capas de control'],
     secciones: 3,
@@ -71,19 +71,19 @@ const ARCHIVOS = [
   },
   {
     nombre: 'Fig2_O2C Process Map_Torrent Chile_EN.png',
-    ext: 'png',
-    meta: 'Figura 2 · Mapa del proceso',
+    ext: 'png', fig: 'mapa',
+    meta: 'Figura 2 · Mapa del proceso · 3216 × 1680 px',
     desc: 'Mapa del proceso O2C y cierre contable por stakeholder y por fase del mes. Cada caja lleva una barra de color a la izquierda que indica si la actividad ya opera, está en definición o no ha empezado.',
     aporta: ['5 fases', '27 actividades', 'Estado por actividad'],
     secciones: 5,
     ir: 'procesos'
   },
   {
-    nombre: 'Fig3_Process Build Timeline_Torrent Chile_EN.png',
-    ext: 'png',
-    meta: 'Figura 3 · Timeline de construcción',
-    desc: 'Dos bandas: lo recorrido de marzo a agosto de 2026 con evidencia documental, y la secuencia propuesta de agosto en adelante. La franja central marca la fecha del documento.',
-    aporta: ['9 hitos construidos', '5 frentes en curso', '5 pendientes'],
+    nombre: 'Fig3_Timeline Construccion Proceso_Torrent Chile.png',
+    ext: 'png', fig: 'timeline',
+    meta: 'Figura 3 · Timeline de construcción · español e inglés · 3216 × 1322 px',
+    desc: 'Dos bandas: lo recorrido de marzo a agosto de 2026 con evidencia documental, y la secuencia propuesta de agosto en adelante. La franja central marca la fecha del documento. Es la única figura que existe en las dos versiones de idioma.',
+    aporta: ['9 hitos construidos', '5 frentes en curso', '5 pendientes', 'ES + EN'],
     secciones: 3,
     ir: 'timeline'
   }
@@ -571,3 +571,42 @@ const HALLAZGOS_DISENO = [
   { sev: 'medio', t: 'Ninguna verificación de accesibilidad',
     d: 'El violeta de marca sobre blanco da 3.38:1 y hoy se usa en etiquetas de ~10 pt. El gris de leyenda da 3.54:1. Ninguno aprueba AA para texto normal. Ninguna imagen tiene texto alternativo, incluidas las cinco diapositivas que son imágenes.' }
 ];
+
+/* ---- 16 · Figuras del documento de proceso ----
+   Las tres figuras originales, descargadas de la carpeta de SharePoint.
+   El texto alternativo es descriptivo y completo: DISENO.md §7.12 registra
+   que en las fuentes no hay «texto alternativo en ninguna imagen, incluidas
+   las cinco diapositivas que son imágenes». Aquí sí lo hay. */
+const FIGURAS = {
+  arquitectura: {
+    n: 1,
+    archivo: 'assets/img/fig1-arquitectura-informacion-en.png',
+    titulo: 'Arquitectura de información',
+    unidad: 'De dónde viene cada dato',
+    kicker: 'Figura 1 · Information architecture of the O2C and closing cycle',
+    idioma: 'Original en inglés',
+    pie: 'Tres capas, cero integración automatizada: hoy todo viaja por correo y Excel. El riesgo central está en la capa 2, que es enteramente manual — cada reporte que no llegue en un formato estable rompe el cierre.',
+    alt: 'Diagrama de tres columnas. Columna 1, sistemas de origen en manos de terceros: CISAT de Pharma ISA, con inventario por lote, recepciones, salidas, despachos y closing stock; SoftLand de Forvis Mazars, con factura electrónica al SII, libros de ventas y compras, cuentas por cobrar y por pagar y mayor contable; y el banco, Citi y HSBC, con la cartola de cobros de clientes y salidas. Columna 2, control local de Torrent LATAM en Excel y correo: conciliación de orden de compra contra factura contra despacho, cartera con antigüedad y DSO, Trial Balance de TPCS, bank statement con asientos y BPC mapping, YMFASUB con IC reconciliation e IC payable, y Cash Balance con los pagos semanales. Columna 3, consolidación en HO India: SAP T303 y E303 para compras, inventario y S&D bajo revisión de factibilidad; BPC para la consolidación de los estados financieros del grupo; e inventory working file e IC file en formato replicado de México. Las flechas van de izquierda a derecha entre las tres capas. Una leyenda al pie marca en verde lo que ya opera, en ámbar lo que está en definición y en gris lo que no ha empezado.'
+  },
+  mapa: {
+    n: 2,
+    archivo: 'assets/img/fig2-mapa-proceso-o2c-en.png',
+    titulo: 'Mapa del proceso O2C y cierre contable',
+    unidad: 'Por stakeholder y por fase del mes',
+    kicker: 'Figura 2 · O2C and month-end closing process map by stakeholder and by phase',
+    idioma: 'Original en inglés',
+    pie: 'Cada caja indica la actividad y, debajo, el entregable que produce. La barra de color a la izquierda indica si esa actividad ya está operando hoy, si está en definición o si no ha empezado. D = día hábil posterior al fin de mes; la cadencia semanal y los días D son una propuesta de Torrent, sujeta a confirmación por Forvis Mazars y Pharma ISA.',
+    alt: 'Matriz de seis filas por cinco columnas. Las filas son los stakeholders: cliente o canal (cadenas de farmacia y distribuidores de Chile); Torrent Chile (José M. Herrera, operación local); Pharma ISA como 3PL (plataforma CISAT, inventario y despacho); Forvis Mazars como BPO (sistema SoftLand, facturación y contabilidad); Torrent LATAM Finanzas (N. Navas, E. Jiménez, O. Gómez); y HO India (SAP T303 y BPC, Corporate Finance). Las columnas son las cinco fases del mes: operación diaria del día 1 al fin de mes, cadencia semanal de viernes a lunes o martes, pre-cierre de D-3 a D+2, cierre contable de D+3 a D+6, y reporte a HO de D+7 a D+10. Cada celda contiene una actividad y el output que entrega, con una barra de color a la izquierda que indica su estado. Flechas punteadas conectan las actividades encadenadas entre filas y columnas.'
+  },
+  timeline: {
+    n: 3,
+    archivo: 'assets/img/fig3-timeline-construccion-es.png',
+    archivoEn: 'assets/img/fig3-timeline-construccion-en.png',
+    titulo: 'Timeline de construcción del proceso',
+    unidad: 'Lo recorrido y lo que sigue',
+    kicker: 'Figura 3 · What has been built and what comes next',
+    idioma: 'Disponible en español e inglés',
+    pie: 'El espaciado es secuencial, no proporcional al tiempo. Las fechas de «lo que sigue» son una propuesta de Torrent Finanzas LATAM.',
+    alt: 'Timeline de dos bandas separadas por una franja central que marca «hoy, 6 de agosto de 2026». La banda superior, «lo recorrido», va de marzo de 2026 al 6 de agosto de 2026 y encadena diez hitos completados en verde: aprobación del CRF HO-25-0080 con la estructura empresarial de Chile en SAP; zarpe del embarque intercompañía de India a Valparaíso el 8 de marzo; confirmación de que Chile opera sin SAP local; desaduanaje y recepción de la mercancía en el 3PL Pharma ISA entre el 18 y el 20 de junio; definición por parte de HO del alcance SAP para T303 el 19 de junio; cierre de Q1 FY26-27 con IC reconciliation e IC payable; cierre completo de julio con Trial Balance, YMFASUB y BPC mapping; acuerdo de pagos con Mazars vía cartola bancaria semanal, con cuatro semanas ya operando; solicitud formal a Mazars del consolidado de órdenes de compra contra facturas el 3 de agosto; y estructura del proceso comunicada a HO con cuatro acuerdos de reportería fijados el 5 y 6 de agosto. La banda inferior, «lo que sigue», va de agosto de 2026 en adelante y alterna hitos en curso en ámbar y pendientes en gris: sesión de trabajo con José M. Herrera; muestra de formato de los cuatro reportes de Mazars; revisión a fondo de la plataforma CISAT; memo a HO con el flujo contable de la venta local, IVA del 19 por ciento y factura electrónica; definición del proceso de cobranza con cupos de crédito, antigüedad, escalamiento y DSO objetivo; calendario de cierre firmado por las tres partes a fin de agosto; primer cierre O2C completo con facturación de venta local en septiembre; inventory working file e IC file de T303 en el formato de México; feasibility de SAP T303 en Q3 FY26-27; y SOP documentado con tablero mensual de O2C y cartera en Q3-Q4 FY26-27.'
+  }
+};
